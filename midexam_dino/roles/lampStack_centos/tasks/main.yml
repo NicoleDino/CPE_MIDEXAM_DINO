@@ -1,0 +1,56 @@
+---
+  - name: Install apache and php for CentOS servers
+    tags: apache,centos,httpd
+    dnf:
+      name:
+        - httpd
+        - php
+      state: latest
+    when: ansible_distribution == "CentOS"
+
+  - name: Start httpd (CentOS)
+    tags: apache,centos,httpd
+    service:
+      name: httpd
+      state: started
+      enabled: true
+    when: ansible_distribution == "CentOS"
+
+  - name: Install mariadb package (Centos)
+    tags: centos,db,mariadb
+    yum:
+      name: mariadb-server
+      state: latest
+    when: ansible_distribution == "CentOS"
+
+  - name: "Mariadb - Restarting/Enabling on CentOS"
+    service:
+      name: mariadb
+      state: restarted
+      enabled: true
+    when: ansible_distribution == "CentOS"
+
+  - name: Install MySQL Software Repo (CentOS)
+    yum:
+      name: http://repo.mysql.com/mysql57-community-release-el7-10.noarch.rpm
+      state: present
+    when: ansible_distribution == "CentOS"
+
+  - name: Install MySQL Database (CentOS)
+    yum:
+      name: mysql-server
+      state: present
+    when: ansible_distribution == "CentOS"
+
+  - name: Install MySQL-python (CentOS)
+    yum:
+      name: MySQL-python
+      state: present
+    when: ansible_distribution == "CentOS"
+
+  - name: Start & Enable MySQL Server to start on boot (CentOS)
+    service:
+      name: mysqld
+      state: started
+      enabled: yes
+    when: ansible_distribution == "CentOS"

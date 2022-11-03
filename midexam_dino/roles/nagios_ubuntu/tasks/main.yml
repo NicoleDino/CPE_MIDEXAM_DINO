@@ -1,0 +1,7 @@
+---
+  - name: Installing Nagios on Ubuntu
+    tags: ubuntu,nagios
+    apt:
+      name: nagios4
+      state: latest
+    when: ansible_distribution == "Ubuntu"

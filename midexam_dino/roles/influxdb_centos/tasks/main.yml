@@ -1,0 +1,20 @@
+---
+  - name: Downloading RPM (CentOS)
+    ansible.builtin.get_url:
+      url: "https://dl.influxdata.com/influxdb/releases/influxdb2-2.0.3.x86_64.rpm"
+      dest: /tmp
+      use_proxy: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: Installing software for influxdb (CentOS)
+    ansible.builtin.dnf:
+      name: /tmp/influxdb2-2.0.3.x86_64.rpm
+      state: present
+    when: ansible_distribution == "CentOS"
+
+  - name: Starting influxdb (CentOS)
+    ansible.builtin.systemd:
+      name: influxdb
+      enabled: yes
+      state: restarted
+    when: ansible_distribution == "CentOS"

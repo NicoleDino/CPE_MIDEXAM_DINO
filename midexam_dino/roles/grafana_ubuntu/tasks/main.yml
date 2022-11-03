@@ -1,0 +1,36 @@
+---
+  - name: Install required packages (Ubuntu)
+    apt:
+      name:
+        - gnupg2
+        - curl
+        - software-properties-common
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Add the Grafana GPG key (Ubuntu)
+    shell: |
+      curl https://packages.grafana.com/gpg.key | sudo apt-key add -
+      add-apt-repository "deb https://packages.grafana.com/oss/deb stable main"
+    args:
+      warn: no
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install the grafana package (Ubuntu)
+    apt:
+      name: grafana
+      state: present
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Start grafana (Ubuntu)
+    systemd:
+      name: grafana-server
+      state: restarted
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Enable grafana (Ubuntu)
+    systemd:
+      name: grafana-server
+      enabled: yes
+    when: ansible_distribution == "Ubuntu"
+

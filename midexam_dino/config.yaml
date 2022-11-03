@@ -1,0 +1,41 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: Update repository index for CentOS
+    tags: always
+    dnf:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "CentOS"
+
+  - name: Install updates for Ubuntu
+    tags: always
+    apt:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "Ubuntu"
+
+  #- name: Stopping ElasticSearch service
+  #  command: systemctl stop elasticsearch
+
+- hosts: ubuntu_server
+  become: true
+  roles:
+   # - elkStack_ubuntu
+   # - nagios_ubuntu
+   # - influxdb_ubuntu
+    - grafana_ubuntu
+   # - prometheus_ubuntu
+   # - lampStack_ubuntu
+
+- hosts: centos_server
+  become: true
+  roles:
+    - elkStack_centos
+    - influxdb_centos
+    - grafana_centos
+    - prometheus_centos
+    - lampStack_centos

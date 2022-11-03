@@ -1,0 +1,24 @@
+---
+  - name: Import InfluxDB GPG signing key (Ubuntu)
+    apt_key:
+      url: https://repos.influxdata.com/influxdb.key
+      state: present
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Add InfluxDB repository (Ubuntu)
+    apt_repository:
+      repo: 'deb https://repos.influxdata.com/ubuntu trusty stable'
+      state: present
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install InfluxDB packages (Ubuntu)
+    apt:
+      name: influxdb
+      state: present
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Start the InfluxDB service (Ubuntu)
+    service:
+      name: influxdb
+      state: restarted
+    when: ansible_distribution == "Ubuntu"
